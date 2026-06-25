@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "skills": {
+    "paths": [
+      "~/.config/opencode/skills"
+    ]
+  }
+
+  // The plugin is auto-discovered from ~/.config/opencode/plugins/
+  // No explicit plugin config needed.
+}

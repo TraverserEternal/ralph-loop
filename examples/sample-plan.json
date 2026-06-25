@@ -1,0 +1,56 @@
+{
+  "sets": [
+    {
+      "description": "Backend API",
+      "branchName": "ralph/backend-api",
+      "steps": [
+        {
+          "description": "Add JWT authentication middleware",
+          "gitCommitName": "feat: add JWT authentication middleware",
+          "gitCommitHash": "",
+          "requirements": "Implement Express middleware that validates JWT tokens from the Authorization header. Return 401 for missing/invalid tokens. Extract user info from the token payload and attach to req.user.",
+          "changeAnalysis": "src/middleware/auth.ts: new file with verifyToken middleware\nsrc/types/express.d.ts: extend Express Request with user property\npackage.json: add jsonwebtoken dependency",
+          "tests": "Run `npm test` — auth middleware tests must pass. Test valid token, expired token, missing header, malformed token.",
+          "humanConfirmationSteps": "Check middleware returns 401 for invalid tokens. Check valid token passes through to next handler with req.user populated.",
+          "status": "pending"
+        },
+        {
+          "description": "Add user registration endpoint",
+          "gitCommitName": "feat: add user registration endpoint",
+          "gitCommitHash": "",
+          "requirements": "POST /api/users/register with email, password, name. Hash password with bcrypt. Return JWT token on success. Validate email format and password strength.",
+          "changeAnalysis": "src/routes/users.ts: add POST /register route\nsrc/models/User.ts: user schema/model\nsrc/validators/user.ts: validation logic\npackage.json: add bcrypt dependency",
+          "tests": "Run `npm test` — registration tests must pass. Test valid registration, duplicate email, weak password, invalid email.",
+          "humanConfirmationSteps": "Send POST request to /api/users/register with valid data and verify JWT returned. Verify duplicate email returns 409.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "description": "Frontend Auth UI",
+      "branchName": "ralph/frontend-auth",
+      "steps": [
+        {
+          "description": "Create login and registration pages",
+          "gitCommitName": "feat: add login and registration pages",
+          "gitCommitHash": "",
+          "requirements": "Create Login and Register pages with form validation. Wire up to backend API endpoints (/api/users/login, /api/users/register). Store JWT in localStorage. Redirect to dashboard on success.",
+          "changeAnalysis": "src/pages/Login.tsx: login form with email/password fields\nsrc/pages/Register.tsx: registration form with name/email/password/confirm-password\nsrc/services/auth.ts: API client functions for login/register\nsrc/App.tsx: add /login and /register routes",
+          "tests": "Run `npm test` — component tests must pass. Form validation, API call mocks, redirect behavior.",
+          "humanConfirmationSteps": "Visit /login and /register pages. Submit forms with valid and invalid data. Verify redirect to dashboard on success.",
+          "status": "pending"
+        },
+        {
+          "description": "Add auth context and protected routes",
+          "gitCommitName": "feat: add auth context and protected route wrapper",
+          "gitCommitHash": "",
+          "requirements": "Create AuthContext that reads JWT from localStorage on mount and provides user state app-wide. Create ProtectedRoute wrapper that redirects to /login if not authenticated.",
+          "changeAnalysis": "src/context/AuthContext.tsx: create context with user state, login/logout functions\nsrc/components/ProtectedRoute.tsx: wrapper component that checks auth\nsrc/App.tsx: wrap protected routes with ProtectedRoute, add AuthProvider",
+          "tests": "Run `npm test` — context tests must pass. Test authenticated and unauthenticated states.",
+          "humanConfirmationSteps": "Visit a protected route without logging in — should redirect to /login. After login, should render normally.",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}
